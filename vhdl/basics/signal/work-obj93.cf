@@ -1,4 +1,0 @@
-v 4
-file . "signal_tb.vhd" "3b049522fbc797c56e44a1d5f3c2e151e7102355" "20260416001040.227":
-  entity signal_tb at 1( 0) + 0 on 19;
-  architecture signal_arq of signal_tb at 4( 33) + 0 on 20;

@@ -1,4 +1,0 @@
-v 4
-file . "if_elsif_else_tb.vhd" "7859ac9be29f0f839a3fa55fdf8113152d697adc" "20260416002941.308":
-  entity if_elsif_else_tb at 1( 0) + 0 on 11;
-  architecture if_elsif_else_arq of if_elsif_else_tb at 4( 40) + 0 on 12;

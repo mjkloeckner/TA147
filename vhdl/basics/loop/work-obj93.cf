@@ -1,4 +1,0 @@
-v 4
-file . "loop_tb.vhd" "25a8c00d386b164f9d7773fcfa99d7fc4fe1fe0e" "20260415235838.488":
-  entity loop_tb at 1( 0) + 0 on 33;
-  architecture loop_arq of loop_tb at 4( 31) + 0 on 34;

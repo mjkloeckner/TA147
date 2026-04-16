@@ -1,7 +1,0 @@
-v 4
-file . "mux_tb.vhd" "eebb9efbd8b02a9ed95aa841c833f5d34c742bd0" "20260416142217.585":
-  entity mux_tb at 1( 0) + 0 on 21;
-  architecture mux_arq of mux_tb at 8( 100) + 0 on 22;
-file . "mux.vhd" "82e3845f949873605ca5cca3fb65e06798420f22" "20260416142217.582":
-  entity mux at 1( 0) + 0 on 19;
-  architecture mux_arq of mux at 19( 410) + 0 on 20;

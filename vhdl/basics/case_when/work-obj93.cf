@@ -1,4 +1,0 @@
-v 4
-file . "case_when_tb.vhd" "173733ea182b065cfd9d63636bf0f022fe61a923" "20260416141854.989":
-  entity case_when_tb at 1( 0) + 0 on 33;
-  architecture case_when_arq of case_when_tb at 8( 106) + 0 on 34;

@@ -1,4 +1,0 @@
-v 4
-file . "sensitivity_list_tb.vhd" "b740dd3fa5fdcdb9244ce2be3423911fdca1be0d" "20260416003644.966":
-  entity sensitivity_list_tb at 1( 0) + 0 on 17;
-  architecture sensitivity_list_arq of sensitivity_list_tb at 4( 43) + 0 on 18;
