@@ -1,0 +1,21 @@
+GHDL = ghdl
+TOP = std_logic_vector_tb
+SRCS = $(TOP).vhd
+WAVEFORM_FILE = $(TOP).vcd
+
+all: run
+
+analyze:
+	$(GHDL) -a $(SRCS)
+
+elaborate: analyze
+	$(GHDL) -e $(TOP)
+
+run: elaborate
+	$(GHDL) -r $(TOP) --vcd=$(WAVEFORM_FILE) --stop-time=1ms
+
+clean:
+	rm -f *.o *.cf $(TOP) $(TOP).vcd
+
+view:
+	surfer -c $(HOME)/.config/surfer/surfer-commands $(WAVEFORM_FILE)

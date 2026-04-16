@@ -1,0 +1,7 @@
+v 4
+file . "hello_world_tb.vhd" "8bd9a0dce8c155f281d25c105948b1ed3f8e2514" "20260415233636.957":
+  entity hello_world_tb at 1( 0) + 0 on 13;
+  architecture hello_world_arq of hello_world_tb at 4( 38) + 0 on 14;
+file . "hello_world.vhd" "21f4fe8cd8873726c0a376d46e3ea47584062e1c" "20260415233227.033":
+  entity hello_world at 1( 0) + 0 on 11;
+  architecture hello_world_arq of hello_world at 4( 35) + 0 on 12;

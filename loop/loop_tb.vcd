@@ -1,0 +1,15 @@
+$date
+  Wed Apr 15 20:58:38 2026
+$end
+$version
+  GHDL v0
+$end
+$timescale
+  1 fs
+$end
+$scope module standard $end
+$upscope $end
+$scope module loop_tb $end
+$upscope $end
+$enddefinitions $end
+#0

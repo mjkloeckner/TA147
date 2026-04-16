@@ -1,0 +1,23 @@
+$date
+  Wed Apr 15 23:03:28 2026
+$end
+$version
+  GHDL v0
+$end
+$timescale
+  1 fs
+$end
+$scope module standard $end
+$upscope $end
+$scope module std_logic_1164 $end
+$upscope $end
+$scope module std_logic_vector_tb $end
+$var reg 8 ! sig_vec_a[7:0] $end
+$var reg 5 " sig_vec_b[4:0] $end
+$upscope $end
+$enddefinitions $end
+#0
+b00000000 !
+b00000 "
+#500000000000
+#1000000000000

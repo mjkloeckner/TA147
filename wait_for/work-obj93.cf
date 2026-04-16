@@ -1,0 +1,4 @@
+v 4
+file . "wait_for_tb.vhd" "878d9c6124fb6a1af87b52e9022bdccec0ccd89b" "20260415234129.105":
+  entity wait_for_tb at 1( 0) + 0 on 21;
+  architecture wait_for_arq of wait_for_tb at 4( 35) + 0 on 22;
