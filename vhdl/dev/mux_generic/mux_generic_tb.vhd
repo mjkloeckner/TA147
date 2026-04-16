@@ -21,7 +21,7 @@ begin
 
     -- instance of `mux` module
     mux_a : entity work.mux_generic(mux_generic_arq) 
-    generic map(mux_data_width => 8)
+    generic map(mux_data_width => mux_data_width)
     port map(
         sig_sel => sig_sel,
         sig_a   => sig_a,
