@@ -1,5 +1,5 @@
 GHDL = ghdl
-TOP = std_logic_vector_tb
+TOP = clock_tb
 SRCS = $(TOP).vhd
 WAVEFORM_FILE = $(TOP).vcd
 
@@ -17,5 +17,5 @@ run: elaborate
 clean:
 	rm -f *.o *.cf $(TOP) $(TOP).vcd
 
-view: all
-	nohup surfer $(WAVEFORM_FILE) >/dev/null 2>&1 &
+view:
+	surfer $(WAVEFORM_FILE)

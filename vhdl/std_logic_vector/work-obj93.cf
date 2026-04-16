@@ -1,4 +1,0 @@
-v 4
-file . "std_logic_vector_tb.vhd" "4026a7eadf796cdaf7e3b970343cce57a563ba09" "20260416020328.676":
-  entity std_logic_vector_tb at 1( 0) + 0 on 15;
-  architecture std_logic_vector_arq of std_logic_vector_tb at 7( 87) + 0 on 16;

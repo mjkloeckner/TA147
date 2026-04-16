@@ -1,5 +1,5 @@
 GHDL = ghdl
-TOP = std_logic_vector_tb
+TOP = std_signed_unsigned_tb
 SRCS = $(TOP).vhd
 WAVEFORM_FILE = $(TOP).vcd
 
