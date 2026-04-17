@@ -49,7 +49,7 @@ begin
             ms_tick_cnt <= ms_tick_cnt + 1;
             case state is
                 when state_0 =>
-                    if ms_tick_cnt = (RED_TIME_MS - 2*YEL_TIME_MS) then
+                    if ms_tick_cnt = RED_TIME_MS then
 
                         ms_tick_cnt <= (others => '0');
                         state <= state_1;
