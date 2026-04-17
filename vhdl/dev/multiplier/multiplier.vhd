@@ -3,7 +3,7 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
 entity multiplier is
-    generic(N : natural := 8);
+    generic(N : natural := 4);
     port(
         op_A : in  std_logic_vector(N-1 downto 0);
         op_B : in  std_logic_vector(N-1 downto 0);
@@ -21,7 +21,7 @@ architecture multiplier_arq of multiplier is
 begin
 
     A_reg : entity work.reg(reg_arq)
-    generic map(N => 8)
+    generic map(N => N)
     port map(
         D   => op_A,
         clk => clk,
@@ -30,7 +30,7 @@ begin
         Q   => A_out);
 
     B_reg : entity work.reg(reg_arq)
-    generic map(N => 8)
+    generic map(N => N)
     port map(
         D   => B_in,
         clk => clk,
@@ -39,7 +39,7 @@ begin
         Q   => B_out);
 
     P_reg : entity work.reg(reg_arq)
-    generic map(N => 8)
+    generic map(N => N)
     port map(
         D   => P_in,
         clk => clk,
@@ -48,17 +48,17 @@ begin
         Q   => P_out);
 
     adder : entity work.adder(adder_arq)
-    generic map(N => 8)
+    generic map(N => N)
     port map(
-       op_A  => P_out,
-       op_B  => aux,
-       c_in  => '0',
-       res   => sum_out,
-       c_out => C_out);
+        A     => P_out,
+        B     => aux,
+        C_in  => '0',
+        res   => sum_out,
+        C_out => C_out);
 
-    in_P <= c_out & out_sum(N-1 downto 1);
-    in_B <= op_B when load = '1' else out_sum(0) & out_B(N-1 downto 1);
-    aux <= out_A when out_B(0) = '1' else (others => '0');
-    res <= out_P & out_B;
+    P_in <= C_out & sum_out(N-1 downto 1);
+    B_in <= op_B when load = '1' else sum_out(0) & B_out(N-1 downto 1);
+    aux <= A_out when B_out(0) = '1' else (others => '0');
+    res <= P_out & B_out;
 
 end architecture;

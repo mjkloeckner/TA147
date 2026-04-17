@@ -7,25 +7,33 @@ end entity;
 
 architecture multiplier_tb_arq of multiplier_tb is
 
-    constant N : integer := 8;
+    constant N : natural := 4;
 
-    signal A    : std_logic_vector(N - 1 downto 0) := x"01";
-    signal B    : std_logic_vector(N - 1 downto 0) := x"02";
+    signal A    : std_logic_vector(N - 1 downto 0) := x"2";
+    signal B    : std_logic_vector(N - 1 downto 0) := x"3";
     signal load : std_logic := '1';
     signal clk  : std_logic := '0';
     signal res  : std_logic_vector(2*N-1 downto 0);
 
 begin
 
-    DUT : entity work.multiplier(multiplier_arq) 
+    multiplier : entity work.multiplier(multiplier_arq) 
     generic map(N => N)
     port map(
+
         op_A => A,
         op_B => B,
         load => load,
-        clk => clk,
-        res => res);
+        clk  => clk,
+        res  => res);
 
-    clk <= not clk after 1 us;
+    process(clk) is
+    begin
+
+        load <= '0' after 10 us;
+
+    end process;
+
+    clk <= not clk after 50 us;
 
 end architecture;

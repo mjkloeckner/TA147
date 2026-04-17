@@ -6,10 +6,10 @@ entity reg is
     generic(N: integer:= 4);
     port(
         -- inputs
-        D   : in  std_logic_vector(N-1 downto 0);
-        clk : in  std_logic;
-        rst : in  std_logic;
-        ena : in  std_logic;
+        D   : in std_logic_vector(N-1 downto 0);
+        clk : in std_logic;
+        rst : in std_logic;
+        ena : in std_logic;
 
         -- outputs
         Q   : out std_logic_vector(N-1 downto 0)

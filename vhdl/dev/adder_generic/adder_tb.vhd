@@ -21,10 +21,10 @@ begin
     adder : entity work.adder(adder_arq)
     generic map(N => N)
     port map(
-      A       => sig_A,
-      B       => sig_B,
-      C_in    => sig_C_in,
-      res     => sig_res,
-      C_out  => sig_C_out);
+      A     => sig_A,
+      B     => sig_B,
+      C_in  => sig_C_in,
+      res   => sig_res,
+      C_out => sig_C_out);
 
 end architecture;
