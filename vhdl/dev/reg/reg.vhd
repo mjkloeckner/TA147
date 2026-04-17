@@ -2,7 +2,7 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-entity flip_flop_d is
+entity reg is
     generic(N: integer:= 4);
     port(
         -- inputs
@@ -16,7 +16,7 @@ entity flip_flop_d is
     );
 end;
 
-architecture flip_flop_d_arq of flip_flop_d is
+architecture reg_arq of reg is
 begin
 
     process(clk, rst)

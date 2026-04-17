@@ -2,10 +2,10 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-entity flip_flop_d_tb is
+entity reg_tb is
 end entity;
 
-architecture flip_flop_d_arq of flip_flop_d_tb is
+architecture reg_arq of reg_tb is
 
     constant N : integer := 4;
 
@@ -17,7 +17,7 @@ architecture flip_flop_d_arq of flip_flop_d_tb is
 
 begin
 
-    flip_flop_d : entity work.flip_flop_d(flip_flop_d_arq)
+    flip_flop_d : entity work.reg(reg_arq)
     generic map(N => N)
     port map(
         D   => sig_D,

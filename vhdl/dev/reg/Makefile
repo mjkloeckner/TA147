@@ -1,5 +1,5 @@
 GHDL          = ghdl
-DEV_NAME      = flip_flop_d
+DEV_NAME      = reg
 TOP           = $(DEV_NAME)_tb
 TOP_SRC       = $(TOP).vhd
 SRCS          = $(DEV_NAME).vhd
