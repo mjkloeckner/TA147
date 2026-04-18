@@ -315,9 +315,9 @@ Para realizar la simulación se creó un nuevo módulo
 \code{intersection\_ctrl\_tb} en el cual se encapsula el sistema diseñado, esto
 de manera de proporcionar señales ficticias que actúen como entradas y salidas.
 Para evitar tener que simular por mas de 30 segundos, se cambio el parámetro
-\code{MAX\_CNT} de \code{50e6} (1 segundo con frecuencia de reloj 50 MHz) por
-\code{5}, de esta forma se activa la bandera de que ha pasado un segundo cada 5
-ciclos de reloj.
+\code{MAX\_CNT} de 50e6 (1 segundo con frecuencia de reloj 50 MHz) por
+10, de esta forma se activa la bandera de que ha pasado un segundo cada 5 ciclos
+de reloj.
 
 Como herramientas de simulación se utilizó \emph{GHDL} y \emph{make} para
 organizar el proceso de análisis, elaboración y simulación del sistema, luego
@@ -327,7 +327,8 @@ pruebas allí para verificar el funcionamiento del diseño. Para la visualizaci�
 de las señales por fuera de Vivado, resultantes de la simulaion en \emph{GHDL},
 se utilizó \emph{surfer}, un programa similar a \emph{GTKWave}. Una vista de las
 formas de onda resultantes de la simulación se muestra en la figura
-\ref{waveform_view} a continuación.
+\ref{waveform_view} a continuación, en la cual 1 segundo de tiempo real equivale
+a 0.1 us en las vistas de las formas de onda.
 
 \begin{figure}[!ht]
     \centering
