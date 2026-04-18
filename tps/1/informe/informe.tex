@@ -143,7 +143,10 @@ fontupper={\ttfamily\mystrut}}
     \textsc{\Large TA147}\\[0.2 cm]
     \textsc{\large Taller de Sistemas Digitales}\\[4 cm]
     \textcolor{cyan}{{
-        \fontsize{25}{32}\selectfont \bfseries \thetitle
+        \begin{minipage}{\textwidth}
+            \centering
+            \fontsize{26}{32}\selectfont \bfseries \thetitle
+        \end{minipage}
     }}\\[0.5cm]
     \vspace{1em}
     {\Large \bfseries Primer Trabajo Práctico}\\[5cm]
@@ -203,13 +206,13 @@ que controle el estado de dos semaforos en la intersección de dos calles.
 Para la implementacion del control de los dos semaforos se modela al sistema
 como una maquina de estados finita compuesta de seis estados ciclicos, en la que
 cada estado representa una configuración de luces. El diagrama de estados de la
-maquina de estados diseñada se muestra en la figura \ref{waveform_view}.
+maquina de estados diseñada se muestra en la figura \ref{statechart}.
 
 \begin{figure}[!ht]
     \centering
     \includegraphics[width=1.00\textwidth]{img/statechart_trim.png}
     \caption{Diagrama de estados del control de semaforos}
-    \label{waveform_view}
+    \label{statechart}
 \end{figure}
 
 Para este trabajo se considera que el estado de cada semaforo es, ordenados en
@@ -316,7 +319,7 @@ la simulacion se muestra en la figura \ref{waveform_view} a continuación.
 
 \begin{figure}[!ht]
     \centering
-    \includegraphics[width=1.00\textwidth]{img/waveform_view_whiter.png}
+    \includegraphics[width=1.00\textwidth]{img/waveform_view.png}
     \caption{Resultado de las señales simuladas}
     \label{waveform_view}
 \end{figure}
