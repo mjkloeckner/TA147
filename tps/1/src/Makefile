@@ -15,7 +15,7 @@ elaborate: analyze
 	$(GHDL) -e $(TOP)
 
 run: elaborate
-	$(GHDL) -r $(TOP) --vcd=$(WAVEFORM_FILE) --stop-time=200ms
+	$(GHDL) -r $(TOP) --vcd=$(WAVEFORM_FILE) --stop-time=1ms --stop-delta=100000
 
 clean:
 	rm -f *.o *.cf $(TOP) $(TOP).vcd

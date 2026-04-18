@@ -39,7 +39,7 @@ begin
         rst   => rst,
         clk_ms => clk_ms);
 
-    process(clk_ms, rst) is
+    process(rst, clk_ms, ms_tick_cnt, state) is
     begin
 
         if rst = '1' then
@@ -50,7 +50,6 @@ begin
             case state is
                 when state_0 =>
                     if ms_tick_cnt = RED_TIME_MS then
-
                         ms_tick_cnt <= (others => '0');
                         state <= state_1;
 
@@ -60,11 +59,9 @@ begin
                         red_2 <= '0';
                         yel_2 <= '1';
                         gre_2 <= '0';
-
                     end if;
                 when state_1 =>
                     if ms_tick_cnt = YEL_TIME_MS then
-
                         ms_tick_cnt <= (others => '0');
                         state <= state_2;
 
@@ -74,11 +71,9 @@ begin
                         red_2 <= '1';
                         yel_2 <= '0';
                         gre_2 <= '0';
-
                     end if;
                 when state_2 =>
                     if ms_tick_cnt = YEL_TIME_MS then
-
                         ms_tick_cnt <= (others => '0');
                         state <= state_3;
 
@@ -88,11 +83,9 @@ begin
                         red_2 <= '1';
                         yel_2 <= '0';
                         gre_2 <= '0';
-
                     end if;
                 when state_3 =>
                     if ms_tick_cnt = GRE_TIME_MS then
-
                         ms_tick_cnt <= (others => '0');
                         state <= state_4;
 
@@ -102,11 +95,9 @@ begin
                         red_2 <= '1';
                         yel_2 <= '0';
                         gre_2 <= '0';
-
                     end if;
                 when state_4 =>
                     if ms_tick_cnt = YEL_TIME_MS then
-
                         ms_tick_cnt <= (others => '0');
                         state <= state_5;
 
@@ -116,11 +107,9 @@ begin
                         red_2 <= '1';
                         yel_2 <= '1';
                         gre_2 <= '0';
-
                     end if;
                 when state_5 =>
                     if ms_tick_cnt = YEL_TIME_MS then
-
                         ms_tick_cnt <= (others => '0');
                         state <= state_0;
 
@@ -130,7 +119,6 @@ begin
                         red_2 <= '0';
                         yel_2 <= '0';
                         gre_2 <= '1';
-
                     end if;
             end case;
         end if;
