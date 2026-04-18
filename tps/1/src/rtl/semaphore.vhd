@@ -75,7 +75,7 @@ begin
         "100010" when state_1r_2y,
         "010100" when state_1ry_2r,
         "001100" when state_1g_2r,
-        "010010" when state_1y_2r,
+        "010100" when state_1y_2r,
         "100010" when state_1r_2ry;
 
     red_1 <= light(5);

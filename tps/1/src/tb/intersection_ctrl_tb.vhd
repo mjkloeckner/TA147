@@ -6,7 +6,7 @@ end entity;
 
 architecture intersection_ctrl_tb_arq of intersection_ctrl_tb is
 
-    constant MAX_CNT : integer := 5;
+    constant MAX_CNT : integer := 10;
 
     signal sig_clk : std_logic := '0';
     signal sig_rst : std_logic := '1';
