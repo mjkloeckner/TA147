@@ -9,7 +9,7 @@ architecture intersection_ctrl_tb_arq of intersection_ctrl_tb is
     constant MAX_CNT : integer := 5;
 
     signal sig_clk : std_logic := '0';
-    signal sig_rst : std_logic := '0';
+    signal sig_rst : std_logic := '1';
 
     signal sig_red_1 : std_logic := '0';
     signal sig_yel_1 : std_logic := '0';
@@ -34,7 +34,7 @@ begin
         yel_2 => sig_yel_2,
         gre_2 => sig_gre_2);
 
+    sig_rst <= '0' after 2 ns;
     sig_clk <= not sig_clk after 5 ns;
-    sig_rst <= '1' after 1 ns, '0' after 2 ns;
 
 end architecture;
