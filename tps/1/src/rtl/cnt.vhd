@@ -18,6 +18,7 @@ architecture cnt_arq of cnt is
 
     constant YELLOW_S : unsigned(5 downto 0) := to_unsigned(3, 6);
     constant RED_GREEN_S : unsigned(5 downto 0) := to_unsigned(30, 6);
+
     signal tick_cnt : unsigned(5 downto 0);
 
 begin
@@ -54,11 +55,17 @@ begin
 
     end process;
     
-    state_flag <= '1' when state /= state_1r_2g and 
-           state /= state_1g_2r and 
-           tick_cnt = YELLOW_S - 1 and ena = '1'
+    state_flag <=
+       '1' when rst = '0' and
+                ena = '1' and
+                state /= state_1r_2g and 
+                state /= state_1g_2r and 
+                tick_cnt = YELLOW_S - 1
        else
-           '1' when tick_cnt = RED_GREEN_S - 1 and ena = '1'
-       else '0';
+       '1' when rst = '0' and
+                ena = '1' and
+                tick_cnt = RED_GREEN_S - 1
+       else
+       '0';
 
 end architecture;
