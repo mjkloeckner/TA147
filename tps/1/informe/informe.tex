@@ -113,7 +113,7 @@
 \usepackage{tcolorbox}
 \newcommand\mystrut{\rule[-3pt]{0pt}{12pt}}
 \newtcbox{\code}{on line, boxrule=0pt, boxsep=0pt, top=0pt,
-left=0pt, bottom=0pt, right=0pt, colback=gray!25, colframe=white,
+left=0pt, bottom=0pt, right=0pt, colback=gray!18, colframe=white,
 fontupper={\ttfamily\mystrut}}
 
 \title{Implementación de Sistema Secuencial en VHDL}          % Titulo del trabajo.
@@ -205,8 +205,13 @@ que controle el estado de dos semaforos en la intersección de dos calles.
 
 Para la implementacion del control de los dos semaforos se modela al sistema
 como una maquina de estados finita compuesta de seis estados ciclicos, en la que
-cada estado representa una configuración de luces. El diagrama de estados de la
-maquina de estados diseñada se muestra en la figura \ref{statechart}.
+cada estado representa una configuración de luces. Se considera que el estado de
+cada semaforo es, ordenados en orden secuencial: solo luz roja encendia, luz
+roja y amarilla encendida al mismo tiempo, solo luz verde encendida y solo luz
+amarilla encendida. 
+
+El diagrama de estados de la maquina de estados diseñada se muestra en la figura
+\ref{statechart}.
 
 \begin{figure}[!ht]
     \centering
@@ -215,107 +220,120 @@ maquina de estados diseñada se muestra en la figura \ref{statechart}.
     \label{statechart}
 \end{figure}
 
-Para este trabajo se considera que el estado de cada semaforo es, ordenados en
-orden secuencial: solo luz roja encendia, luz roja y amarilla encendida al mismo
-tiempo, solo luz verde encendida y solo luz amarilla encendida. Y los estados de
-la maquina de estados representas la configuración de luces como se muestra a
-continuación
+Donde los estados de la maquina de estados representan la configuración de
+luces como se muestra a continuación:
 
 \begin{itemize}
-    \item state\_0: primer semaforo en rojo, segundo en verde.
-    \item state\_1: primer semaforo en rojo, segundo en amarillo.
-    \item state\_2: primer semaforo en rojo y amarillo, sngundo en rojo.
-    \item state\_3: primer semaforo en verde, segundo en rojo.
-    \item state\_4: primer semaforo en amarillo, segundo en rojo.
-    \item state\_5: primer semaforo en rojo, segundo en rojo y amarillo.
+    \item state\_1r\_2g: primer semaforo en rojo, segundo en verde.
+    \item state\_1r\_2y: primer semaforo en rojo, segundo en amarillo.
+    \item state\_1ry\_2r: primer semaforo en rojo y amarillo, sngundo en rojo.
+    \item state\_1g\_2r: primer semaforo en verde, segundo en rojo.
+    \item state\_1y\_2r: primer semaforo en amarillo, segundo en rojo.
+    \item state\_1r\_2ry: primer semaforo en rojo, segundo en rojo y amarillo.
 \end{itemize}
 
 A cada estado del semanforo se asigna un valor de tiempo en segundos, para los
 estados solo rojo o solo verde se asigna 30 segundos y para los estados que
 involucran amarillo se asignan 2 segundos.
 
-Dado que el dispositivo programable en el cual se sintetizará el diseño solo
+Dado que el dispositivo programable en el cual se sintetiza el diseño solo
 dispone de una señal de reloj de frecuencia 50 MHz, se implementa un modulo de
-reloj de tiempo real (Real Time Clock, RTC) que permita determinar cuandos
-milisegundos reales pasan en cada estado. Esto se hacen contando los ciclos de
-reloj, sabiendo que el contando se incrementa cada $1/50MHz$ segundos.
+reloj de tiempo real (Real Time Clock, RTC) que permita determinar la cantidad
+de segundos reales. Luego este modulo RTC se combina con un modulo que cuenta la
+cantidad de segundos en cada estado y genera una señal bandera (flag) que indica
+que se debe cambiar de estado.
+
+\hypertarget{implementacion}{%
+\section{Implementación}\label{implementacion}}
+
+Para la implementación del control de los dos semáforos, se divide la lógica
+en distintos submódulos que interactúan entre sí. Y se integran estos submodulos
+en un módulo principal denominado \code{intersection\_ctrl}.
+
+El diseño se compone de las siguientes partes fundamentales, modeladas mediante
+el lenguaje de descripción de hardware VHDL: \code{semaphore\_pkg}, \code{rtc},
+\code{cnt}, \code{semaphore} y \code{intersection\_ctrl}.
+
+\hypertarget{semaphore\_pkg}{%
+\subsection{semaphore\_pkg}\label{semaphore_pkg}}
+
+En este paquete se definen los tipos de datos utilizados en el sistema. En
+particular, se define el tipo enumerativo \code{state\_t}, el cual representa
+los seis estados secuenciales y cíclicos de la máquina de estados.
+
+\hypertarget{rtc}{%
+\subsection{rtc}\label{rtc}}
+
+Este módulo se utiliza para contar la cantidad de segundos reales, activando la
+bandera \code{seg\_flag} por un ciclo de reloj en cada segundo. Para determinar
+la cantidad de segundos se utiliza un contador que incrementa su valor en cada
+ciclo de reloj hasta alcanzar el valor de \code{MAX\_CNT}.
+
+\hypertarget{cnt}{%
+\subsection{cnt}\label{cnt}}
+
+Este modulo es el responsable de medir la duración de cada estado incrementando
+un contador interno únicamente cuando es habilitado por la señal
+\code{seg\_flag} que proviende del modulo RTC. El tiempo objetivo depende del
+estado actual: en los estados con amarillo se utiliza una constante de 3
+segundos (\code{YELLOW\_S}) y para los estados en verde o rojo se utiliza una
+constante de 30 segundos (\code{RED\_GREEN\_S}). Al finalizar la cuenta se
+activa la señal \code{state\_flag} para solicitar un cambio de estado.
+
+\hypertarget{semaphore}{%
+\subsection{semaphore}\label{semaphore}}
+
+Este módulo implementa la lógica de control central. Transiciona secuencialmente
+a través de los seis estados definidos únicamente cuando recibe la señal
+\code{state\_flag}. Además, decodifica el estado actual para asignar los niveles
+lógicos a las salidas físicas, controlando las luces roja, amarilla y verde de
+ambos semáforos.
 
 \if{0}
-\section{Diseño en VHDL}
-
-\subsection{Entidad}
-\begin{lstlisting}
-entity semaforo is
-    Port (
-        clk     : in  STD_LOGIC;
-        reset   : in  STD_LOGIC;
-        luz_A   : out STD_LOGIC_VECTOR (2 downto 0);
-        luz_B   : out STD_LOGIC_VECTOR (2 downto 0)
-    );
-end semaforo;
-\end{lstlisting}
-
-\subsection{Arquitectura}
-\begin{lstlisting}
-architecture Behavioral of semaforo is
-
-type estado_type is (S0, S1, S2, S3);
-signal estado : estado_type := S0;
-
-begin
-
-process(clk, reset)
-begin
-    if reset = '1' then
-        estado <= S0;
-    elsif rising_edge(clk) then
-        case estado is
-            when S0 => estado <= S1;
-            when S1 => estado <= S2;
-            when S2 => estado <= S3;
-            when S3 => estado <= S0;
-        end case;
-    end if;
-end process;
-
-process(estado)
-begin
-    case estado is
-        when S0 =>
-            luz_A <= "100"; -- Verde
-            luz_B <= "001"; -- Rojo
-        when S1 =>
-            luz_A <= "010"; -- Amarillo
-            luz_B <= "001";
-        when S2 =>
-            luz_A <= "001"; -- Rojo
-            luz_B <= "100"; -- Verde
-        when S3 =>
-            luz_A <= "001";
-            luz_B <= "010"; -- Amarillo
-    end case;
-end process;
-
-end Behavioral;
-\end{lstlisting}
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=1.00\textwidth]{img/statechart_trim.png}
+    \caption{Diagrama de estados del control de semáforos}
+    \label{statechart}
+\end{figure}
 \fi
+
+\hypertarget{intersection\_ctrl}{%
+\subsection{intersection\_ctrl}\label{intersection_ctrl}}
+
+Este es el modulo principal, o superior, en este modulo se instancion todos los
+submodulos, asignando las señales de entrada y salida.
+
+Este módulo actúa como la entidad de nivel superior (o \emph{top-level}) del
+diseño. Su función principal es la instanciación y el interconectado de los
+componentes funcionales: \code{rtc}, \code{cnt} y \code{semaphore}. A través de
+este bloque se propaga el parámetro genérico \code{MAX\_CNT} y se gestionan las
+señales internas \code{seg\_flag} y \code{state\_flag}, las cuales permiten la
+comunicación entre los módulos \code{rtc} y \code{cnt}; y la lógica de control
+final de las salidas físicas.
 
 \hypertarget{simulacion}{%
 \section{Simulación}\label{simulacion}}
 
-Para realizar la simulacion se creó un nuevo módulo en el cual se encapsula el
-sistema diseñado, esto de manera de proporcionar señales ficticias que actuen
-como entradas y salidas. En particular, para la señal de reloj, se utilizó un
-reloj de frecuencia 1 MHz, pero se "engaño" al moudlo rtc para que cuente hasta
-$1/1000$ veces la frecuencia de reloj. De esta forma, un segundo de tiempo
-"real" se tranforma en un milisegundo de tiempo de simulación.
+Para realizar la simulacion se creó un nuevo módulo
+\code{intersection\_ctrl\_tb} en el cual se encapsula el sistema diseñado, esto
+de manera de proporcionar señales ficticias que actuen como entradas y salidas.
+Para evitar tener que simular por mas de 30 segundos, se cambio el parámetro
+\code{MAX\_CNT} de \code{50e6} (representadno 50 MHz) por \code{5}, de esta
+forma se activa la bandera de que ha pasado un segundo cada 5 ciclos de reloj.
 
 Como herramientas de simulación se utilizó \emph{GHDL} y \emph{make} para
 organizar el proceso de analisis, elaboracion y simulacion del sistema, luego
-durante la sintesis, Vivado tambien proporciona una opción de simulación
-utilizando los mismos módulos. Para la visualización de las señales se utilizó
-\emph{surfer}, el cual es un programa similar a \emph{GTKWave}. El resultado de
-la simulacion se muestra en la figura \ref{waveform_view} a continuación.
+para la sintesis se utilizo Xilinx Vivado. Vivado tambien proporciona una opción
+de simulación utilizando los mismos módulos, por lo que tambien se hicieron
+pruebas alli para verificar el funcionamiento del diseño. Para la visualización
+de las señales por uera de vivado se utilizó \emph{surfer}, el cual es un
+programa similar a \emph{GTKWave}.
+
+
+\if{0}
+El resultado de la simulacion se muestra en la figura \ref{waveform_view} a
+continuación.
 
 \begin{figure}[!ht]
     \centering
@@ -323,12 +341,13 @@ la simulacion se muestra en la figura \ref{waveform_view} a continuación.
     \caption{Resultado de las señales simuladas}
     \label{waveform_view}
 \end{figure}
+\fi
 
 \hypertarget{sintesis}{%
 \section{Síntesis}\label{sintesis}}
 
 Utilizando Vivado se realizo una sintesis del sistema sobre el dispositivo FPGA
-modelo xc7a15tftg256-1.
+modelo xc7a15tftg256-1, verificando el correcto funcioanmiento del diseño.
 
 % \begin{itemize}
 %     \item No existen bucles combinacionales.
@@ -339,10 +358,12 @@ modelo xc7a15tftg256-1.
 \hypertarget{conclusion}{%
 \section{Conclusión}\label{conclusion}}
 
-En este trabajo se logró implementar un controlador de dos semaforos parala
+En este trabajo se logró implementar un controlador de dos semaforos para la
 intersección de dos calles utilizando VHDL y validando el diseño mediante
-simulación en GHDL. Luego se realizo una sintesis utilizando Vivado. Con
-respecto a las maquinas de estados finitos, se concluye que resultan adecuadas
-para este tipo de aplicaciones.
+simulación en GHDL y en Vivado. Por último se realizo una sintesis sobre un
+dipositivo FPGA real.
+
+Con respecto a las maquinas de estados finitos, se concluye que resultan
+adecuadas y muy útiles para este tipo de aplicaciones.
 
 \end{document}

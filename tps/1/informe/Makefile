@@ -11,4 +11,4 @@ open: informe
 	nohup zathura $(DOCNAME).pdf > /dev/null 2>&1 &
 
 clean:
-	rm *.aux *.log
+	rm *.aux *.log *.out *.toc 2>/dev/null
